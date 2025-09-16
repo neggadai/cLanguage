@@ -17,7 +17,7 @@ Node* create_node(int data) {
     Node* n = (Node*)malloc(sizeof(Node));
     if (!n) { perror("malloc"); exit(1); }
     n->data = data;
-    n->color = BLACK; 
+    n->color = RED; 
     n->left = n->right = n->parent = NULL;
     return n;
 }
@@ -30,7 +30,7 @@ void rotateLeft(RBTree *tree, Node *x) {
 
     y->parent = x->parent;
     if (x->parent == NULL)
-        tree->root = x;
+        tree->root = y;
     else if (x == x->parent->left)
         x->parent->left = y;
     else
@@ -66,7 +66,7 @@ void fixViolation(RBTree *tree, Node *z) {
                 z->parent->color = BLACK;
                 y->color = BLACK;
                 z->parent->parent->color = RED;
-                z = z->parent; 
+                z = z->parent->parent; 
             } else {
                 if (z == z->parent->right) {
                     z = z->parent;
@@ -82,7 +82,7 @@ void fixViolation(RBTree *tree, Node *z) {
                 z->parent->color = BLACK;
                 y->color = BLACK;
                 z->parent->parent->color = RED;
-                z = z->parent; 
+                z = z->parent->parent; 
             } else {
                 if (z == z->parent->left) {
                     z = z->parent;
@@ -94,7 +94,7 @@ void fixViolation(RBTree *tree, Node *z) {
             }
         }
     }
-    if (tree->root) tree->root->color = RED; 
+    if (tree->root) tree->root->color = BLACK; 
 }
 
 void insert(RBTree *tree, int data) {
@@ -114,9 +114,9 @@ void insert(RBTree *tree, int data) {
     if (y == NULL)
         tree->root = z;
     else if (z->data < y->data)
-        y->right = z; 
+        y->left = z; 
     else
-        y->left = z;  
+        y->right = z;  
 
     fixViolation(tree, z);
 }
@@ -128,7 +128,27 @@ void inorder(Node *r) {
     inorder(r->right);
 }
 
-int main() {
+
+void printTree(Node* root, int indent) {
+    if (root == NULL) return;
+
+    for (int i = 0; i < indent; i++) printf("    ");
+    printf("%d(%c)\n", root->data, root->color == RED ? 'R' : 'B');
+
+
+    if (root->left) {
+        for (int i = 0; i < indent; i++) printf("    ");
+        printf("/ \n");
+        printTree(root->left, indent + 1);
+    }
+    if (root->right) {
+        for (int i = 0; i < indent; i++) printf("    ");
+        printf("\\ \n");
+        printTree(root->right, indent + 1);
+    }
+}
+
+int main() { 
     RBTree tree; tree.root = NULL;
     int vals[] = {20, 15, 25, 10, 5, 1, 30, 22, 27};
     for (size_t i = 0; i < sizeof(vals)/sizeof(vals[0]); ++i)
@@ -137,6 +157,7 @@ int main() {
     printf("Inorder (value(color)):\n");
     inorder(tree.root);
     printf("\n");
+    printTree(tree.root, 0);
     return 0;
 }
 
