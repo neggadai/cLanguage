@@ -15,7 +15,10 @@ typedef struct {
 
 Node* create_node(int data) {
     Node* n = (Node*)malloc(sizeof(Node));
-    if (!n) { perror("malloc"); exit(1); }
+    if (!n) {
+    fprintf(stderr,"Error: cannot allocate memory\n");
+    exit(1);
+    }
     n->data = data;
     n->color = RED; 
     n->left = n->right = n->parent = NULL;
