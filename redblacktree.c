@@ -1,17 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-typedef enum { RED, BLACK } Color;
-
-typedef struct Node {
-    int data;
-    Color color;
-    struct Node *left, *right, *parent;
-} Node;
-
-typedef struct {
-    Node *root;
-} RBTree;
+#include "redblacktree.h"
 
 Node* create_node(int data) {
     Node* n = (Node*)malloc(sizeof(Node));
@@ -151,10 +140,18 @@ void printTree(Node* root, int indent) {
     }
 }
 
+Node* search(Node* root, int value) {
+    if (!root) return NULL;
+    if (root->data == value) return root;
+    if (value < root->data) return search(root->left, value);
+    return search(root->right, value);
+}
+#if 0
 int main() { 
     RBTree tree; tree.root = NULL;
     int vals[] = {20, 15, 25, 10, 5, 1, 30, 22, 27};
-    for (size_t i = 0; i < sizeof(vals)/sizeof(vals[0]); ++i)
+    size_t n = ARRAY_LEN(values);
+    for (size_t i = 0; i < n; ++i)
         insert(&tree, vals[i]);
 
     printf("Inorder (value(color)):\n");
@@ -163,4 +160,4 @@ int main() {
     printTree(tree.root, 0);
     return 0;
 }
-
+#endif
