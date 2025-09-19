@@ -49,7 +49,7 @@ void rotateRight(RBTree *tree, Node *y) {
     y->left = x->right;
     if (x->right) x->right->parent = y;
 
-    x->parent = y; 
+    x->parent = y->parent; 
     if (y->parent == NULL)
         tree->root = x;
     else if (y == y->parent->left)
@@ -93,7 +93,7 @@ void fixViolation(RBTree *tree, Node *z) {
                 }
                 z->parent->color = BLACK;
                 z->parent->parent->color = RED;
-                rotateRight(tree, z->parent->parent); 
+                rotateLeft(tree, z->parent->parent); 
             }
         }
     }
