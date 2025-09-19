@@ -15,7 +15,7 @@ int main() {
     tree.root = NULL;
 
     int values[] = {20, 15, 25, 10, 5, 1, 30, 22, 27};
-    int n = sizeof(values)/sizeof(values[0]);
+    int n = ARRAY_LEN(values);
 
     for(int i=0;i<n;i++)
         insert(&tree, values[i]);
