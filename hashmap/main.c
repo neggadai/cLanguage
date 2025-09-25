@@ -1,0 +1,22 @@
+#include <stdio.h>
+#include "hash.h"
+
+int main() {
+    HashMap map;
+    init(&map);
+
+    insert(&map, "baobab", 10);
+    insert(&map, "banana", 20);
+    insert(&map, "los", 30);
+
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        if (map.table[i].used)
+            printf("[%d] %s = %d\n", i, map.table[i].key, map.table[i].value);
+    }
+
+    int* val = get(&map, "banana");
+    if (val) printf("banana => %d\n", *val);
+
+    return 0;
+}
+
