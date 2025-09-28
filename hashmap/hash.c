@@ -3,11 +3,15 @@
 #include <string.h>
 #include "hash.h"
 
-unsigned int hash_ascii(const char* key) {
-    unsigned int sum = 0;
-    while (*key) sum += (unsigned char)(*key++);
-    return sum % TABLE_SIZE;
+unsigned int hash_djb2(const char* str) {
+    unsigned long hash = 5381;
+    int c;
+    while ((c = *str++)) {
+        hash = ((hash << 5) + hash) + c; // hash * 33 + c
+    }
+    return hash % TABLE_SIZE;
 }
+
 
 void init(HashMap* map) {
     for (int i = 0; i < TABLE_SIZE; i++) {
@@ -17,7 +21,7 @@ void init(HashMap* map) {
 }
 
 void insert(HashMap* map, const char* key, int value) {
-    unsigned int index = hash_ascii(key);
+    unsigned int index = hash_djb2(key);
     for (int i = 0; i < TABLE_SIZE; i++) {
         unsigned int pos = (index + i) % TABLE_SIZE;
         if (!map->table[pos].used || strcmp(map->table[pos].key, key) == 0) {
@@ -32,7 +36,7 @@ void insert(HashMap* map, const char* key, int value) {
 }
 
 int* get(HashMap* map, const char* key) {
-    unsigned int index = hash_ascii(key);
+    unsigned int index = hash_djb2(key);
     for (int i = 0; i < TABLE_SIZE; i++) {
         unsigned int pos = (index + i) % TABLE_SIZE;
         if (map->table[pos].used) {
@@ -47,7 +51,7 @@ int* get(HashMap* map, const char* key) {
 }
 
 void remove_key(HashMap* map, const char* key) {
-    unsigned int index = hash_ascii(key);
+    unsigned int index = hash_djb2(key);
     for (int i = 0; i < TABLE_SIZE; i++) {
         unsigned int pos = (index + i) % TABLE_SIZE;
         if (map->table[pos].used && strcmp(map->table[pos].key, key) == 0) {
