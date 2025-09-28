@@ -45,4 +45,15 @@ int* get(HashMap* map, const char* key) {
     }
     return NULL;
 }
-
+void remove_key(HashMap* map, const char* key) {
+    unsigned int index = hash_ascii(key);
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        unsigned int pos = (index + i) % TABLE_SIZE;
+        if (map->table[pos].used && strcmp(map->table[pos].key, key) == 0) {
+            free(map->table[pos].key);
+            map->table[pos].key = NULL;
+            map->table[pos].used = 0;
+            return;
+        }
+    }
+}
