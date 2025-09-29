@@ -22,6 +22,14 @@ int main() {
         if (map.table[i].used)
             printf("[%d] %s = %d\n", i, map.table[i].key, map.table[i].value);
     }
+
+    HashMap copy;
+    copy_map(&map, &copy);
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        if (copy.table[i].used)
+            printf("[%d] %s = %d\n", i, copy.table[i].key, copy.table[i].value);
+    }
+
     return 0;
 }
 

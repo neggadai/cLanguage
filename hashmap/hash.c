@@ -45,6 +45,7 @@ int* get(HashMap* map, const char* key) {
     }
     return NULL;
 }
+
 void remove_key(HashMap* map, const char* key) {
     unsigned int index = hash_ascii(key);
     for (int i = 0; i < TABLE_SIZE; i++) {
@@ -54,6 +55,15 @@ void remove_key(HashMap* map, const char* key) {
             map->table[pos].key = NULL;
             map->table[pos].used = 0;
             return;
+        }
+    }
+}
+
+void copy_map(HashMap* src, HashMap* dest) {
+    init(dest);
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        if (src->table[i].used) {
+            insert(dest, src->table[i].key, src->table[i].value);
         }
     }
 }
