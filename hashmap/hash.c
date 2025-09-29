@@ -63,7 +63,10 @@ void copy_map(HashMap* src, HashMap* dest) {
     init(dest);
     for (int i = 0; i < TABLE_SIZE; i++) {
         if (src->table[i].used) {
-            insert(dest, src->table[i].key, src->table[i].value);
+            dest->table[i].key = strdup(src->table[i].key);
+            dest->table[i].value = src->table[i].value;
+            dest->table[i].used = 1;
         }
     }
 }
+
