@@ -16,7 +16,12 @@ int main() {
 
     int* val = get(&map, "banana");
     if (val) printf("banana => %d\n", *val);
-
+    
+    remove_key(&map, "banana");
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        if (map.table[i].used)
+            printf("[%d] %s = %d\n", i, map.table[i].key, map.table[i].value);
+    }
     return 0;
 }
 

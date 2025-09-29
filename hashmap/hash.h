@@ -15,4 +15,5 @@ unsigned int hash_ascii(const char* key);
 void init(HashMap* map);
 void insert(HashMap* map, const char* key, int value);
 int* get(HashMap* map, const char* key);
+void remove_key(HashMap* map, const char* key);
 
