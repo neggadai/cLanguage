@@ -28,6 +28,9 @@ void insert(HashMap* map, const char* key, int value) {
             if (!map->table[pos].used) {
                 map->table[pos].key = strdup(key);
                 map->table[pos].used = 1;
+            }else{
+                free(map->table[pos].key);
+                map->table[pos].key = strdup(key);
             }
             map->table[pos].value = value;
             return;
@@ -74,3 +77,12 @@ void copy_map(HashMap* src, HashMap* dest) {
     }
 }
 
+void free_map(HashMap* map) {
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        if (map->table[i].used && map->table[i].key) {
+            free(map->table[i].key);
+            map->table[i].key = NULL;
+        }
+        map->table[i].used = 0;
+    }
+}

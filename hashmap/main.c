@@ -29,7 +29,9 @@ int main() {
         if (copy.table[i].used)
             printf("[%d] %s = %d\n", i, copy.table[i].key, copy.table[i].value);
     }
-
-    return 0;
+    
+    free_map(&map);
+    
+return 0;
 }
 
